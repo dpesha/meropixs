@@ -1,0 +1,170 @@
+ * { margin: 0; padding: 0; border: 0; }
+  html, body {height: 100%;}
+  #header{
+	height:30px;
+	border-bottom:#484848;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	background-image: url("/images/general/GG_160x20.png");
+	background-repeat: no-repeat;
+	background-position: 30px 5px;
+  }
+
+  #container {
+    width: 1024px; 
+	margin: 40px auto;
+    visibility: hidden;
+  }
+  
+  #wrap {min-height: 100%;}
+  
+  #main {
+		overflow:auto;
+		padding-bottom: 70px; /* must be same as (height of footer + container margin 40px) */
+		}  
+
+  #footer {
+		position: relative;
+		margin-top: -30px; /* negative value of footer height */
+		height: 30px;
+		clear:both;
+  } 
+ 
+  div.hide {
+    visibility:hidden;
+  }
+
+  div.captions {
+    z-index: 100;
+    font-family:Comic Sans, Comic Sans MS, cursive; 
+    font-size: 10px;
+    text-align: right;
+  }
+
+
+  ul.gallery { 
+    list-style: none;
+  }
+
+  ul.gallery li  {
+    position: relative;
+    float: left;
+    padding: 10px 10px 10px 10px;
+    background: #eee;
+    margin: 5px;
+    border: 1px solid #fff;
+    -moz-box-shadow: 0px 2px 15px #333;
+  }
+
+  ul.gallery li div.polaroid {
+    width:280px;
+    height:210px;
+    margin: 0px;
+    overflow:hidden;
+  }
+
+  ul.gallery li div.polaroid a:hover {
+    z-index: 10;
+    -moz-box-shadow: 3px 5px 15px #333;
+  }
+  
+  #social{
+  	float:right;
+  	color:white;
+  	font-size:10px;
+  }
+  
+  #footerText{
+  	margin-left:30px;
+  	float:left;
+  	color:white;
+  	font-size:10px;
+  }
+  
+  #footerText a,#social a{
+  	text-decoration:none;
+  	color:#dfdfdf;
+  	}
+
+  #footerText a:hover,#social a:hover{
+  	text-decoration:underline;  	
+  }
+  
+  #footerText a:visited,#social a:visited{
+  	color:#9d11b3;  	
+  }  
+
+@media only screen and (max-width : 838px) {
+	
+	
+}
+
+@media only screen and (max-width : 768px) {
+		
+}
+
+@media only screen and (max-width : 568px) {
+		
+	
+	
+}
+
+@media only screen and (max-width : 518px) {
+	
+	
+	
+}
+
+@media only screen and (max-width : 468px) {		
+	
+	
+	
+}
+
+@media only screen and (max-width : 418px) {
+	
+	
+	
+}
+
+@media only screen and (max-width : 368px) {
+	
+	
+	
+}
+
+
+/*Smartphones */
+@media 	only screen and (max-width : 480px) {
+	
+	#container{
+		width:310px;
+		margin:2px;
+	}
+	
+	#header{
+		background-image: url("/images/general/GG_120x15.png");
+		background-repeat: no-repeat;
+		background-position: 2px 5px;
+		border:0px;
+	}
+	
+	#controls-wrapper, #prevslide, #nextslide {
+    	opacity:0;
+    	visibility:hidden;
+    }
+	
+	#progress-back{
+		bottom:0px;
+	}
+	
+	ul.gallery {	
+		margin:0;
+		padding:0;
+	}
+	
+	#footerText{
+  		margin-left:0px;  		
+  	}
+			
+}
