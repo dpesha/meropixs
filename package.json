@@ -2,6 +2,10 @@
     "name": "meropixs"
   , "version": "0.0.1"
   , "private": true
+  , "engines": {
+    "node": "0.6.9",
+    "npm":  "1.1.0"
+  }
   , "dependencies": {
       "express": "2.5.11"
     , "jade": ">= 0.0.1"
