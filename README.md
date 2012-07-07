@@ -1,4 +1,4 @@
-meropixs
+Meropixs
 ========
 
 Yet another photo viewer
