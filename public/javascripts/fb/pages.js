@@ -132,7 +132,7 @@ HistoryManager.init(window);
  				var images = data[v]["images"];
 
  				if (smallScreenMediaFlg) {
- 					var image = images[3];
+ 					var image = images[4];
  				} else {
  					var image = images[0];
  				}
