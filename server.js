@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -13,16 +12,17 @@ var express = require('express')
 // Database
 mongoose.connect('mongodb://localhost/meropixsdb');
 // Schema
-var Schema = mongoose.Schema;
-  
+var Schema = mongoose.Schema; 
 
 var UserSchema = new Schema({
     facebookId: String,  
-    name: String    
+    name: String,
+    accessToken: String    
 });
 
 var User = mongoose.model('User', UserSchema);
 
+// OAuth Implemenation with everyauth
 everyauth.everymodule.findUserById(function (userId, callback) {
     User.findById(userId,function(err,user){
       if(err) {callback(err,null)};
@@ -34,7 +34,8 @@ everyauth
   .facebook
     .appId(conf.fb.appId)
     .appSecret(conf.fb.appSecret)
-    .findOrCreateUser(function (session, accessToken, accessTokenExtra, fbUserMetadata) {
+    .scope('user_photos')    
+    .findOrCreateUser(function (session, accessToken, accessTokenExtra, fbUserMetadata) {      
      var id = fbUserMetadata.id;     
      var promise = this.Promise();    
     User.findOne({facebookId: id}, function(err, result) {
@@ -42,7 +43,8 @@ everyauth
       if(!result) {
         user = new User();
         user.facebookId = id;
-        user.name = fbUserMetadata.name;      
+        user.name = fbUserMetadata.name;
+        user.accessToken=accessToken;      
         user.save();
       } else {
       user = result;
@@ -52,7 +54,8 @@ everyauth
     return promise;
   }).redirectPath('/'); 
 
-  
+
+// create Server  
 
 var app = module.exports = express.createServer();
 
@@ -79,10 +82,9 @@ app.configure('production', function(){
 
 // Routes
 app.get('/', routes.index);
-
 everyauth.helpExpress(app);
-var port = process.env.PORT || 3000;
 
+var port = process.env.PORT || 3000;
 app.listen(port, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
