@@ -4,5 +4,12 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'GetGlimpses' })
+	/*if(req.session.auth){
+		user=req.sessions.auth.twitter.screen_name;
+	}*/
+	res.render('index', 
+		{ title: 'GetGlimpses'
+	  	  //locals: {user:user}
+		}
+	  )
 };

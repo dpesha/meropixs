@@ -19,6 +19,12 @@ html.no-js(lang='en')
   body
     #wrap
       #header
+        #login
+          - if (everyauth.loggedIn)
+            p Hello, #{everyauth.facebook.user.name}, 
+              a(href="/logout") Logout
+          - else
+            a(href="/auth/facebook") Login with facebook             
       #main
         #container
           ul.gallery
@@ -69,7 +75,7 @@ html.no-js(lang='en')
     #footer
       #footerText
         span
-          | powered by
+          | powered by 
           a(href='http://www.facebook.com') facebook
           | ,
           a(href='http://jquery.com/') jQuery
@@ -81,7 +87,7 @@ html.no-js(lang='en')
           a(href='https://github.com/balupton/History.js/') history.js
       #social
         span
-          | find us on
+          | find us on 
           a(href='http://www.facebook.com/GetGlimpses') facebook
     //if lt IE 7
       p.chromeframe
