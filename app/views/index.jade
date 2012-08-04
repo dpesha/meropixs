@@ -1,0 +1,104 @@
+!!! 5
+html.no-js(lang='en')
+  head
+    script(src='/javascripts/libs/modernizr-2.5.3.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+    script
+      window.jQuery || document.write('<script src="/javascripts/libs/jquery-1.7.1.min.js"><\\/script>')
+    script(src='/javascripts/libs/jquery.history.js')
+    link(rel='stylesheet', href='/stylesheets/supersized.css', type='text/css', media='screen')
+    link(rel='stylesheet', href='/theme/supersized.shutter.css', type='text/css', media='screen')
+    script(type='text/javascript', src='/javascripts/libs/jquery.easing.min.js')
+    script(type='text/javascript', src='/javascripts/libs/supersized.3.2.7.js')
+    script(type='text/javascript', src='/theme/supersized.shutter.js')
+    script(type='text/javascript', src='/javascripts/libs/hammer.js')
+    script(type='text/javascript', src='/javascripts/libs/jquery.specialevent.hammer.js')
+    script(type='text/javascript', src='/javascripts/touchevent.js')
+    script(type='text/javascript', src='/javascripts/fb/pages.js')
+    link(rel='stylesheet', href='/stylesheets/meropixs.css')
+  body
+    #wrap
+      #header
+        #login
+          - if (everyauth.loggedIn)
+            p Hello, #{everyauth.facebook.user.name}, 
+              a(href="/logout") Logout
+          - else
+            a(href="/auth/facebook") Login with facebook             
+      #main
+        #container
+          ul.gallery
+        #slide_container.hide
+          //
+            Thumbnail Navigation
+          #prevthumb
+          #nextthumb
+          //
+            Arrow Navigation
+          a#prevslide.load-item
+          a#nextslide.load-item
+          #thumb-tray.load-item
+            #thumb-back
+            #thumb-forward
+          //
+            Time Bar
+          #progress-back.load-item
+            #progress-bar
+          //
+            Control Bar
+          #controls-wrapper.load-item
+            #controls
+              a#play-button
+                img#pauseplay(src='images/ss/pause.png')
+              //
+                Slide counter
+              #slidecounter
+                span.slidenumber
+                | /
+                span.totalslides
+              //
+                Slide captions displayed here
+              #slidecaption
+              //
+                Thumb Tray button
+              a#tray-button
+                img#tray-arrow(src='images/ss/button-tray-up.png')
+              //
+                Navigation
+              ul#slide-list
+        //
+           End of slide container
+      //
+         End of main 
+    //
+       End of wrap
+    #footer
+      #footerText
+        span
+          | powered by 
+          a(href='http://www.facebook.com') facebook
+          | ,
+          a(href='http://jquery.com/') jQuery
+          | ,
+          a(href='http://buildinternet.com/project/supersized/') supersized!
+          | ,
+          a(href='http://eightmedia.github.com/hammer.js/') hammer.js
+          | ,
+          a(href='https://github.com/balupton/History.js/') history.js
+      #social
+        span
+          | find us on 
+          a(href='http://www.facebook.com/GetGlimpses') facebook
+    //if lt IE 7
+      p.chromeframe
+        | Your browser is
+        em ancient!
+        a(href='http://browsehappy.com/') Upgrade to a different browser
+        | or
+        a(href='http://www.google.com/chromeframe/?redirect=true') install Google Chrome Frame
+        | to experience this site.
+    script
+      /* var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));*/
