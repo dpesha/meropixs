@@ -21,7 +21,7 @@ html.no-js(lang='en')
       #header
         #login
           - if (everyauth.loggedIn)
-            p Hello, #{everyauth.facebook.user.name}, 
+            p Hello, #{everyauth.facebook.user.name},
               a(href="/logout") Logout
           - else
             a(href="/auth/facebook") Login with facebook             

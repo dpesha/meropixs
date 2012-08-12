@@ -7,3 +7,7 @@ exports.index = function(req, res){
 		{ title: 'GetGlimpses'}
 	  )
 };
+
+exports.error=function(req,res){
+	res.render('error', {title: 'Ooops!', message:'Something wrong with request'});
+}

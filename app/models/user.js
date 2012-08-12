@@ -25,7 +25,7 @@ everyauth
   .facebook
     .appId(conf.fb.appId)
     .appSecret(conf.fb.appSecret)
-    .scope('user_photos')    
+    .scope('user_photos,email')    
     .findOrCreateUser(function (session, accessToken, accessTokenExtra, fbUserMetadata) {      
       var id = fbUserMetadata.id;     
       var promise = this.Promise();

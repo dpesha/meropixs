@@ -4,7 +4,8 @@
 
 var express = require('express')
   , fs = require('fs')
-  , routes = require('./routes');
+  , routes = require('./routes')
+  , rest = require('./rest/users');
 
 // Bootstrap db connection
 require('./db-connect');
@@ -43,8 +44,23 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+function authenticate(req,res,next){
+  if(req.user){
+    next();
+  } else {
+    routes.error(req,res);
+  }
+}
+
 // Routes
 app.get('/', routes.index);
+
+// RESTFUL URL
+app.get('/users', authenticate, rest.listUsers);
+app.post('/users', authenticate, rest.newUser);
+app.get('/users/:id', authenticate, rest.viewUser);
+app.put('/users/:id', authenticate, rest.updateUser);
+app.delete('/users/:id', authenticate, rest.deleteUser);
 
 everyauth.helpExpress(app);
 
