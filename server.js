@@ -45,7 +45,6 @@ app.configure('production', function(){
 
 // Routes
 app.get('/', routes.index);
-app.get('/register',routes.register);
 
 everyauth.helpExpress(app);
 

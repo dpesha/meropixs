@@ -3,7 +3,12 @@ var exports = module.exports = everyauth = require('everyauth')
 
 var UserSchema = new Schema({  
     name: String,
-    email: String        
+    email: String,
+    social:{
+      provider:String,
+      snsUserId:String,
+      accessToken:String
+    }        
 });
 
 var exports = module.exports = User = mongoose.model('User', UserSchema);
@@ -22,57 +27,29 @@ everyauth
     .appSecret(conf.fb.appSecret)
     .scope('user_photos')    
     .findOrCreateUser(function (session, accessToken, accessTokenExtra, fbUserMetadata) {      
-    var id = fbUserMetadata.id;     
-    var promise = this.Promise();
-    Social.findOne({sns:'facebook'},function(err, result){
-      var snsId=result.snsId;
+      var id = fbUserMetadata.id;     
+      var promise = this.Promise();
+      User.findOne({'social.provider':'facebook','social.snsUserId':id},function(err, result){
 
-      UserSocial.findOne({snsUserId: id, snsId: snsId}, function(err,res){
-
-        var userSocial;
         var user;
-
-        if(!res){
-
-          // create social info
-          userSocial = new UserSocial();
-          userSocial.snsId = snsId;
-          userSocial.snsUserId = id;
-          userSocial.accessToken = accessToken;
+        if(!result){
 
           // create user info
           user = new User();
           user.name = fbUserMetadata.name;
-          user.email = fbUserMetadata.email;              
+          user.email = fbUserMetadata.email;
+          user.social.provider = 'facebook';
+          user.social.snsUserId = id;
+          user.social.accessToken = accessToken              
           user.save();
-          
-          // store user id into user_social doc
-          userSocial.userId=user._id;
-          userSocial.save();
           promise.fulfill(user);
 
         }
         else {
-
-          userSocial=res;
-          User.findOne({_id:res.userId},function(err,re){
-
-            var usr;
-            if(!re){
-              // create user info
-              usr = new User();
-              usr.name = fbUserMetadata.name;
-              usr.email = fbUserMetadata.email;              
-              usr.save();
-            }
-            else {
-              usr=re;
-            }
-            promise.fulfill(usr);
-          });
+          user=result;
+          promise.fulfill(user);
         }
       });
-    });    
     return promise;
   }).redirectPath('/');
 
