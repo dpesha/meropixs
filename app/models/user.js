@@ -4,11 +4,11 @@ var exports = module.exports = everyauth = require('everyauth')
 var UserSchema = new Schema({  
     name: String,
     email: String,
-    social:{
+    social:[{
       provider:String,
       snsUserId:String,
       accessToken:String
-    }        
+    }]        
 });
 
 var exports = module.exports = User = mongoose.model('User', UserSchema);
@@ -38,9 +38,7 @@ everyauth
           user = new User();
           user.name = fbUserMetadata.name;
           user.email = fbUserMetadata.email;
-          user.social.provider = 'facebook';
-          user.social.snsUserId = id;
-          user.social.accessToken = accessToken              
+          user.social.push({provider:'facebook', snsUserId:id, accessToken:accessToken});              
           user.save();
           promise.fulfill(user);
 
