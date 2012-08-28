@@ -25,13 +25,8 @@ var app = module.exports = express.createServer();
 
 // Configuration
 app.configure(function(){
-<<<<<<< HEAD
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
-=======
-  app.set('views', __dirname + '/app/views');
-  app.set('view engine', 'jade');
->>>>>>> feacaae44b3a8966b72d6b3a7e8dba6f8d0cb7ff
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({secret: "secret"}));
