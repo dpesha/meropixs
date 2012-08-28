@@ -1,15 +1,13 @@
-
 /*
  * GET home page.
  */
 
 exports.index = function(req, res){
-	/*if(req.session.auth){
-		user=req.sessions.auth.twitter.screen_name;
-	}*/
 	res.render('index', 
-		{ title: 'GetGlimpses'
-	  	  //locals: {user:user}
-		}
+		{ title: 'GetGlimpses'}
 	  )
 };
+
+exports.error=function(req,res){
+	res.render('error', {title: 'Ooops!', message:'Something wrong with request'});
+}

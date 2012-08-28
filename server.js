@@ -3,66 +3,35 @@
  */
 
 var express = require('express')
+  , fs = require('fs')
   , routes = require('./routes')
-  , everyauth = require('everyauth')
-  , util =require('util')
-  , conf = require('./config/oauth_providers')
-  , mongoose = require('mongoose');
-  
-// Database
-mongoose.connect('mongodb://localhost/meropixsdb');
-// Schema
-var Schema = mongoose.Schema; 
+  , rest = require('./rest/users');
 
-var UserSchema = new Schema({
-    facebookId: String,  
-    name: String,
-    accessToken: String    
-});
+// Bootstrap db connection
+require('./db-connect');
 
-var User = mongoose.model('User', UserSchema);
+// Bootstrap models
+var models_path = __dirname + '/app/models'
+  , model_files = fs.readdirSync(models_path)
+model_files.forEach(function (file) {
+  if (file == 'user.js')
+    User = require(models_path+'/'+file)
+  else
+    require(models_path+'/'+file)
+})  
 
-// OAuth Implemenation with everyauth
-everyauth.everymodule.findUserById(function (userId, callback) {
-    User.findById(userId,function(err,user){
-      if(err) {callback(err,null)};
-      if(user) {callback(null,user)}
-    });    
-});  
-
-everyauth
-  .facebook
-    .appId(conf.fb.appId)
-    .appSecret(conf.fb.appSecret)
-    .scope('user_photos')    
-    .findOrCreateUser(function (session, accessToken, accessTokenExtra, fbUserMetadata) {      
-     var id = fbUserMetadata.id;     
-     var promise = this.Promise();    
-    User.findOne({facebookId: id}, function(err, result) {
-      var user;
-      if(!result) {
-        user = new User();
-        user.facebookId = id;
-        user.name = fbUserMetadata.name;
-        user.accessToken=accessToken;      
-        user.save();
-      } else {
-      user = result;
-      }
-      promise.fulfill(user);
-    });
-    return promise;
-  }).redirectPath('/'); 
-
-
-// create Server  
-
+// create Server 
 var app = module.exports = express.createServer();
 
 // Configuration
 app.configure(function(){
+<<<<<<< HEAD
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
+=======
+  app.set('views', __dirname + '/app/views');
+  app.set('view engine', 'jade');
+>>>>>>> feacaae44b3a8966b72d6b3a7e8dba6f8d0cb7ff
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({secret: "secret"}));
@@ -80,8 +49,24 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+function authenticate(req,res,next){
+  if(req.user){
+    next();
+  } else {
+    routes.error(req,res);
+  }
+}
+
 // Routes
 app.get('/', routes.index);
+
+// RESTFUL URL
+app.get('/users', authenticate, rest.listUsers);
+app.post('/users', authenticate, rest.newUser);
+app.get('/users/:id', authenticate, rest.viewUser);
+app.put('/users/:id', authenticate, rest.updateUser);
+app.delete('/users/:id', authenticate, rest.deleteUser);
+
 everyauth.helpExpress(app);
 
 var port = process.env.PORT || 3000;
