@@ -10,10 +10,10 @@
 	background-position: 30px 5px;
   }
 
-  #container {
+  #gallery_container {
     width: 1024px; 
 	margin: 40px auto;
-    visibility: hidden;
+    /**visibility: hidden;**/
   }
   
   #wrap {min-height: 100%;}
@@ -67,7 +67,7 @@
     z-index: 10;
     -moz-box-shadow: 3px 5px 15px #333;
   }
-  
+
   #login{
     float:right;
     font-size:10px;
@@ -84,13 +84,13 @@
     font-weight:bold;
     color:#dfdfdf;
   }
-
+  
   #social{
   	float:right;
   	color:white;
   	font-size:10px;
   }
-    
+  
   #footerText{
   	margin-left:30px;
   	float:left;
@@ -103,7 +103,7 @@
   	color:#dfdfdf;
   	}
 
-  #footerText a:hover,#social a:hover, #login a:hover{
+  #footerText a:hover,#social a:hover{
   	text-decoration:underline;  	
   }
   

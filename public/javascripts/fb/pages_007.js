@@ -7,6 +7,14 @@
 	ref.parentNode.insertBefore(js, ref);
 }(document));
 
+(function() {
+	var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+	po.src = 'https://apis.google.com/js/plusone.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+})();
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+
 /* Page History Management*/
 
 var HistoryManager= new function(){
@@ -54,7 +62,7 @@ HistoryManager.init(window);
  								|| navigator.userAgent.match(/iPad/i)
  								|| navigator.userAgent.match(/iPod/i);
  	var no_of_photos_per_page = 15;
- 	var listOfFBPages = ["/naturalwondersofnepal", "/visitjapan","/NASA","/198320350202343","/natgeo","/KeepExploring"];
+ 	var listOfFBPages = ["/naturalwondersofnepal", "/visitjapan","/NASA","/visitcostarica","/natgeo","/KeepExploring"];
  	var no_of_polaroids = listOfFBPages.length;
  	var drawn = 0;
 
@@ -86,7 +94,8 @@ HistoryManager.init(window);
  		drawn = drawn + 1;
  		if (no_of_polaroids === drawn) {
  			$("#supersized-loader").addClass("hide");
- 			$("#container").css('visibility','visible').hide().fadeIn(1000); 			
+ 			$("#social").fadeIn(1000);
+ 			$("#container").fadeIn(1000); 			
  			drawn = 0;
  		}
  	}
@@ -96,7 +105,6 @@ HistoryManager.init(window);
  			method : 'fql.query',
  			query  : 'SELECT object_id, like_info FROM photo WHERE aid in (SELECT aid FROM album WHERE owner=' + userId + ') order by created desc limit 100'
  		},
-
  		function(data) {
  			//sorts the results in descending order of number of likes
  			data.sort(function(a,b) {
@@ -145,8 +153,7 @@ HistoryManager.init(window);
  				});
  			}
  			 //page transition
-	        $("#header").fadeOut('slow');
-	        $("#footer").fadeOut('slow');
+	        $("#social").fadeOut('slow');
 	        $("#container").fadeOut('slow',function() {
 	        	$("#supersized-loader").removeClass("hide");
 	        	// initialize slideshow	        
@@ -154,10 +161,10 @@ HistoryManager.init(window);
 	        		slide_links:'blank',
 	        		slides : slides
 	        	});
-	        	$("#slide_container").css('visibility','visible').hide().fadeIn("slow");
+	        	$("#slide_container").fadeIn("slow");
 	        			
 	    	});
- 			HistoryManager.History.pushState({state:1}, "GetGlimpses", "?state=1"); 
+ 			HistoryManager.History.pushState({state:1}, "MeroPixs", "?state=1"); 
 	       
 	    });
  	}
@@ -166,7 +173,7 @@ HistoryManager.init(window);
  		
  		var width  = data["cover_width"];
  		var height = data["cover_height"];
-
+ 		
  		if (3 * width > 4 * height) {
 			var photo =$("<div class='polaroid'><a class='pic_link' href='javascript:void()'>" +
 			             "<img src='" + data["cover"] + "' style='max-height:210px'></img></a></div>");
@@ -175,17 +182,120 @@ HistoryManager.init(window);
 				         "<img src='" + data["cover"] +"' style='max-width:280px'></img></a></div>");
  		}
  		
- 		var frame = $("<li></li>");
+ 		var photo =$("<div class='polaroid'><a class='pic_link' href='javascript:void()'>" +
+	             "<img src='" + data["cover"] + "'></img></a></div>");
+ 		
+ 		// SKS-S
+ 		
+ 		var change = $("<div class='change' style='display:'><a href='javascript:void(0);'><img src='/images/change.png'></img></a></div>");
+ 		var userInput = $("<div class='userInput'></div>");
+ 		var subDiv = $("<div class='subDiv'></div>");
+ 		var tbInput = $("<input class='tbInput' type='text' />");
+ 		
+ 		var okBtn = $("<button>OK</button>");
+ 		var cxlBtn = $("<button>Cancel</button>");
+ 		
+ 		subDiv.append("<span style='color:#ffffff;'>Enter FB Page Name:</span><br/>");
+ 		subDiv.append(tbInput);
+ 		subDiv.append("<br/><br/>");
+ 		subDiv.append(okBtn);
+ 		subDiv.append("&nbsp;&nbsp;");
+ 		subDiv.append(cxlBtn);
+ 		subDiv.append("<br/>");
+ 		subDiv.append("<div class='msgBar' style='color:#ff0000;' />");
+ 		userInput.append(subDiv);
+ 		
+ 		// SKS-E
+ 		
+ 		var frame = $("<li id='" + data["id"] + "'</li>");
        	frame.append(photo);
+       	
+       	// SKS-S
+       	
+       	frame.append(change);
+       	userInput.hide();
+       	frame.append(userInput);
+       	
+       	// SKS-E
+       	
  		frame.append("<div class='captions'>"+ data["name"]+ "</div>");
  		$(".gallery").append(frame);
 
  		photo.click(function() {
- 			slidePhotos(data["id"]); 			
+ 			slidePhotos(data["id"]);
  		});
 
- 		callback(); 		
- 	}    	
+ 		// SKS-S
+ 		
+ 		change.click(function() {
+ 			$("#" + data["id"] + " .userInput").show();
+ 			$("#" + data["id"] + " .userInput .tbInput").focus();
+ 		});
+ 		
+ 		okBtn.click(function(){
+ 	 		//$("#" + data["id"] + " .userInput").hide();
+ 			//$("#" + data["id"] + " .userInput .msgBar").html("FB page not found!");
+ 	 		//alert($("#" + data["id"] + " .userInput .tbInput").attr('value'));
+ 			
+ 			var fbPage = $("#" + data["id"] + " .userInput .tbInput");
+ 			if (fbPage.attr('value').trim() == ""){
+ 				fbPage.attr('value', '');
+ 				$("#" + data["id"] + " .userInput .msgBar").html("Don't try to be clever!");
+ 			}
+ 			else{
+ 				//alert("I am here");
+ 				var fbPagename = fbPage.attr('value');
+ 				FB.api(fbPagename, function(newdata){
+ 					//alert(newdata);
+ 					// check for a valid response
+ 			        if (newdata == "undefined" || newdata == null || !newdata || newdata.error) 
+ 			        {
+ 			        	$("#" + data["id"] + " .userInput .msgBar").html("FB page NOT found!");
+ 			            return;
+ 			        }
+ 			       
+ 			       hideUserInput(data["id"]);
+ 			       changePolaroid(data["id"], newdata);
+ 			       newdata = null;
+ 				});
+ 			}
+ 	 	});
+ 		
+ 		cxlBtn.click(function(){
+ 			hideUserInput(data["id"]);
+ 	 	});
+ 		
+ 		// SKS-E
+ 		
+ 		callback();
+ 	} 
+ 	
+ 	// SKS-S
+ 	
+ 	var hideUserInput = function(polaroidId){
+ 		$("#" + polaroidId + " .userInput .tbInput").attr('value', '');
+		$("#" + polaroidId + " .userInput .msgBar").html("");
+	 	$("#" + polaroidId + " .userInput").hide();
+ 	}
+ 	
+ 	var changePolaroid = function(polaroidId, newdata){
+ 		//alert("FB page found!");
+		var newid = newdata["id"];
+		var cover = newdata["cover"];
+		$("#" + polaroidId + " .polaroid .pic_link img").attr('src', cover["source"]);
+	 	$("#" + polaroidId + " .captions").html(newdata["name"]);
+	 			
+	 	fbPagesInfo[newid]  = { id:newid, name:newdata["name"], link:newdata["link"], cover:cover["source"]};
+	 	getMostLikedPhotosByPageId(newid, no_of_photos_per_page);
+	 			
+	 	var newphoto = $("#" + polaroidId + " .polaroid");
+	 	newphoto.unbind('click');
+	 	newphoto.click(function() {
+	 		slidePhotos(newid);
+	 		});
+ 	}
+ 	
+ 	// SKS-E
  	
  	drawn=0;
  	for (var i=0; i < listOfFBPages.length; i++) {

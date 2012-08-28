@@ -1,0 +1,16 @@
+<% _.each(polaroids, function(polaroid){ %>
+<li>
+    <div class="polaroid" data-polaroid="<%= polaroid.get("id")%>">
+        <a class="pic_link" href="javascript:void()">
+        	<% if( 3 * polaroid.get("cover_photo")["width"] > 4 *polaroid.get("cover_photo")["height"] ) { %>
+            	<img src="<%= polaroid.get("cover_photo")["src"] %>" style="max-height:210px"  data-polaroid="<%= polaroid.get("id")%>">
+			<% } else { %>
+            	<img src="<%= polaroid.get("cover_photo")["src"] %>" style="max-width:280px"  data-polaroid="<%= polaroid.get("id")%>">
+			<% } %>
+        </a>
+    </div>
+    <div class="captions">
+        <%= polaroid.get("label") %>
+    </div>
+</li>
+<% }); %>

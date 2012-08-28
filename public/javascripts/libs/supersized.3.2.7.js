@@ -15,9 +15,15 @@ var SS = SS || {};
 
 	/* Place Supersized Elements
 	----------------------------*/
+	
+	/**
 	$(document).ready(function() {
-		$('body').append('<div id="supersized-loader"></div><ul id="supersized"></ul>');
+		$('body').append('<ul id="supersized"></ul>');
 	});
+	**/
+	
+	
+	
     
     
     $.supersized = function(options){
@@ -870,7 +876,7 @@ var SS = SS || {};
 			if (typeof theme != 'undefined' && typeof theme.afterAnimation == "function" ) theme.afterAnimation();
 			
 			return false;
-		
+			
 		};
 		
 		base.getField = function(field){
