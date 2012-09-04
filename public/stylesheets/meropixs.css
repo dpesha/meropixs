@@ -12,10 +12,15 @@
 
   #gallery_container {
     width: 1024px; 
-	margin: 40px auto;
+    height: 500px;
+	  margin: 40px auto;
     /**visibility: hidden;**/
   }
   
+  #slide_container {
+    visibility: hidden;
+  }
+
   #wrap {min-height: 100%;}
   
   #main {

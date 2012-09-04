@@ -3,9 +3,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/home/polaroid',
-  'views/home/slideshow'
-], function($, _, Backbone, polaroidView, slideshowView ){
+  'meropixs',
+  'views/polaroid',
+  'views/slideshow'
+], function($, _, Backbone, MeroPixs, polaroidView, slideshowView ){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -16,11 +17,12 @@ define([
     slideShow: function(id){
       // Call render on the module we loaded in via the dependency array
       // 'views/projects/list'
-      slideshowView.render(id);
+      MeroPixs.showView(slideshowView, {id:id});
     },
     defaultAction: function(actions){
       // We have no matching route, lets display the home page
-      polaroidView.render();
+      MeroPixs.showView(polaroidView);
+      //polaroidView.render();
     }
   });
 

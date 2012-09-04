@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/home/polaroid'
+  'models/polaroid'
 ], function($, _, Backbone, polaroidModel){
   var polaroidsCollection = Backbone.Collection.extend({
     model: polaroidModel,

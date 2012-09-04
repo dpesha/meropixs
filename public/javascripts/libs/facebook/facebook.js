@@ -1,5 +1,5 @@
 //Filename: facebook.js
-define(['facebooklib'], function() {
+define(['jquery','facebooklib'], function($) {
 	var FB = this.FB;
 	FB.init({
 		appId      : '186003581527498', // MERO PIXS DEV _App ID
@@ -9,14 +9,14 @@ define(['facebooklib'], function() {
 		xfbml      : true  // parse XFBML
 	});
 	
- 	var getMostLikedPhotosByPageId = function(userId, numberOfPhotos, callback) {
- 		var fbPagesMostLikedPhotos = new Object();
+ 	var getFavoritePhotosByPageId = function(userId, numberOfPhotos) { 		
+ 		var dfd = $.Deferred();
+ 		var fbPagesMostLikedPhotos = new Object(); 		
  		
  		FB.api({
  			method : 'fql.query',
  			query  : 'SELECT object_id, like_info FROM photo WHERE aid in (SELECT aid FROM album WHERE owner=' + userId + ') order by created desc limit 100'
  		},
-
  		function(data) {
  			//sorts the results in descending order of number of likes
  			data.sort(function(a,b) {
@@ -28,16 +28,17 @@ define(['facebooklib'], function() {
  					return -1;
  				return 0;
  			});
-
  			//Stores the top "n" of most liked photos	
  			fbPagesMostLikedPhotos = data.slice(0, numberOfPhotos);
-			if(callback) {
-				callback(fbPagesMostLikedPhotos);
-			}
+ 			dfd.resolve(fbPagesMostLikedPhotos);
  		});
+ 		
+ 		return dfd.promise();
  	};
  	
- 	var getPhotoInfos = function(photoIds, callback) {
+ 	var getPhotoInfos = function(photoIds) {
+
+ 		var dfd = $.Deferred();
  		var object_ids = new Array();
  		for(i =0; i < photoIds.length; i++) {
  			object_ids.push(photoIds[i]["object_id"]);
@@ -46,8 +47,7 @@ define(['facebooklib'], function() {
  		FB.api({
  			method: 'fql.query',
  			query:  'SELECT images FROM photo WHERE object_id in (' + object_ids.join(",") +')'
- 		},
- 		function(data) {
+ 		}, function(data) {
  			var photos = new Array();
  			for(var v=0; v<data.length; v++) { 				
  				var images = data[v]["images"];
@@ -55,19 +55,18 @@ define(['facebooklib'], function() {
  				photos.push({
  					image : image["source"], 
  					thumb : image["source"], 
- 					title : '',	
+ 					title : 'This is a test title',	
  					url   : '' 
  				});
- 			}  
- 			
- 			if(callback) {
- 				callback(photos);
- 			}
+ 			} 
+ 			dfd.resolve(photos);
 	    });
+	    return dfd.promise();
  	};
 
 
-	var storeFBPage = function(pageresponse, callback) {
+	var storeFBPage = function(pageresponse) {
+		var dfd = $.Deferred();
 		var id           = pageresponse["id"];
 		var name         = pageresponse["name"];
 		var link         = pageresponse["link"];
@@ -78,42 +77,70 @@ define(['facebooklib'], function() {
 
 		FB.api("/" + cover_id, function(data) { 			
 			fbPageInfo["cover_width"] = data["width"];
-			fbPageInfo["cover_height"] = data["height"]; 
-			if(callback) {
-				callback(fbPageInfo);
-			}
+			fbPageInfo["cover_height"] = data["height"];
+			dfd.resolve(fbPageInfo);
 		});	
+
+		return dfd.promise();
 	}
 	
-	var getFBPageInfo = function(fbpage, callback) {
+	var getFBPageInfo = function(fbpage) {
+		var dfd = $.Deferred();
 		FB.api(fbpage, 
-				(function(callback) {
-					return function(pageresponse) {
-						storeFBPage(pageresponse, callback);						
-					}
-				})(callback));
+				function(pageresponse) {
+					var promise = storeFBPage(pageresponse);
+					promise.then(
+						function(fbPageInfo) {
+							dfd.resolve(fbPageInfo);	
+						}
+					);
+				}
+		);
+		return dfd.promise();
 	};
 
 	return {
-		getFBPagesInfo : function(listOfFBPages, callback) {
+
+		getFBPageInfoById: function(pageId) {
+			return getFBPageInfo(pageId);
+		},
+
+		getFBPagesInfo : function(listOfFBPages) {
+			var dfd = $.Deferred();
 			var fbPagesInfo = new Array();
 			var count = 0;
 			var insertFbPageInfo = function(response) {
 				fbPagesInfo.push(response);
 				count = count + 1;				
-				if (count === listOfFBPages.length && callback) {
-					callback(fbPagesInfo);
+				if (count === listOfFBPages.length) {
+					dfd.resolve(fbPagesInfo);
 				}
-			}		
-			for (var i=0; i < listOfFBPages.length; i++) {
-				getFBPageInfo(listOfFBPages[i], insertFbPageInfo);
 			}
+			for (var i=0; i < listOfFBPages.length; i++) {
+				getFBPageInfo(listOfFBPages[i]).then(
+					function(response) {	
+						insertFbPageInfo(response);
+					}
+				);
+			}
+			return dfd.promise();
 		},
 		
-		getMostLikedPhotosByPageId : function(id, no_of_photos_per_page, callback) {
-			getMostLikedPhotosByPageId(id, no_of_photos_per_page, function(response) {
-				getPhotoInfos(response, callback);
-			});			
+		getMostLikedPhotosByPageId : function(id, no_of_photos_per_page) {
+			var dfd = $.Deferred();		
+			var promise = getFavoritePhotosByPageId(id, no_of_photos_per_page);
+			promise.then(
+				function(response) {
+					var photoInfosPromise = getPhotoInfos(response);
+					photoInfosPromise.then(
+
+						function(photoInfoResponse) {
+							dfd.resolve(photoInfoResponse);
+						}
+					);
+				}
+			);
+			return dfd.promise();
 		}
 	};
 });

@@ -225,7 +225,7 @@ var SS = SS || {};
 		base.launch = function(){
 		
 			base.$el.css('visibility','visible');
-			$('#supersized-loader').remove();		//Hide loading animation
+			//$('#supersized-loader').remove();		//Hide loading animation
 			
 			// Call theme function for before slide transition
 			if( typeof theme != 'undefined' && typeof theme.beforeAnimation == "function" ) theme.beforeAnimation('next');

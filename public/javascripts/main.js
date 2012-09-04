@@ -5,7 +5,7 @@
 // Their usage will become more apparent futher along in the tutorial.
 require.config({
   paths: {
-    jquery: 'libs/jquery/jquery-min',
+    jquery: 'libs/jquery/jquery-1.8.1',
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone-optamd3-min',
     facebooklib: '//connect.facebook.net/en_US/all',
@@ -16,9 +16,11 @@ require.config({
     hammer: 'libs/hammer',
     specialeventhammer: 'libs/jquery.specialevent.hammer',
     touchevent: 'touchevent',    	
-    page:'fb/pages',
     text: 'libs/require/text',
-    templates: '../templates'    	
+    templates: '../templates',
+    meropixs: 'libs/common/meropixs',
+    jqueryeffectscore  : 'libs/jquery/jquery.effects.core',
+    jqueryeffectsslide : 'libs/jquery/jquery.effects.slide'    	
   },
   
   shim: {
@@ -33,8 +35,15 @@ require.config({
 	  supersizedshutter: {
 		  deps: ["jquery", "jqueryeasing", "supersized"],
 		  exports: 'supersizedshutter'
-	  }	  
+	  },  
+    jqueryeffectscore: {
+      deps: ["jquery"]
+    },
+    jqueryeffectsslide: {
+      deps: ["jquery", "jqueryeffectscore"]
+    }
   }
+
 });
 
 require([
