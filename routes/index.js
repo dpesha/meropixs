@@ -1,7 +1,3 @@
-/*
- * GET home page.
- */
-
 exports.index = function(req, res){
 	res.render('index', 
 		{ title: 'GetGlimpses'}
@@ -10,4 +6,8 @@ exports.index = function(req, res){
 
 exports.error=function(req,res){
 	res.render('error', {title: 'Ooops!', message:'Something wrong with request'});
+}
+
+exports.fbcallback=function(req,res){
+	res.render('fbcallback', {title: 'Success'});
 }

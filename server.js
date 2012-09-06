@@ -54,6 +54,7 @@ function authenticate(req,res,next){
 
 // Routes
 app.get('/', routes.index);
+app.get('/auth/facebook/cb', routes.fbcallback);
 
 // RESTFUL URL
 app.get('/users', authenticate, rest.listUsers);

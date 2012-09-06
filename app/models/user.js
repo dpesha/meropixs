@@ -1,5 +1,6 @@
 var exports = module.exports = everyauth = require('everyauth')
   , conf = require('./../../config/oauth_providers');
+var url = require('url');  
 
 var UserSchema = new Schema({  
     name: String,
@@ -25,7 +26,13 @@ everyauth
   .facebook
     .appId(conf.fb.appId)
     .appSecret(conf.fb.appSecret)
-    .scope('user_photos,email')    
+    .authQueryParam('display', 'popup')
+    .scope('user_photos,email')
+    .handleAuthCallbackError( function (req, res) {
+      var parsedUrl = url.parse(req.url, true)
+      , errorDesc = parsedUrl.query.error_description;
+      res.render('error', {title: 'Ooops!', message:errorDesc });
+    })    
     .findOrCreateUser(function (session, accessToken, accessTokenExtra, fbUserMetadata) {      
       var id = fbUserMetadata.id;     
       var promise = this.Promise();
@@ -49,5 +56,5 @@ everyauth
         }
       });
     return promise;
-  }).redirectPath('/');
+  }).redirectPath('/auth/facebook/cb/');
 
