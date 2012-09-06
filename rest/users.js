@@ -15,6 +15,7 @@ exports.listUsers=function(req,res){
 	});
 };
 
+
 //CREATE
 exports.newUser=function(req,res){
 	var user = new User(req.body.user);
