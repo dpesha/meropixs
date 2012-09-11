@@ -9,8 +9,14 @@
 			<% } %>
         </a>
     </div>
-    <div class="captions">
-        <%= polaroid.get("label") %>
+    <div class="pic_footer">
+        <div class="actions">
+            <!-- TODO Replace text with icon -->
+            <a class="customize_link" href="javascript:void()">Customize</a>
+        </div>
+        <div class="captions">
+            <%= polaroid.get("label") %>
+        </div>
     </div>
 </li>
 <% }); %>

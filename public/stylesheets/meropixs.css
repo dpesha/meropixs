@@ -39,11 +39,19 @@
     visibility:hidden;
   }
 
-  div.captions {
+  div.captions, div.actions {
     z-index: 100;
     font-family:Comic Sans, Comic Sans MS, cursive; 
     font-size: 10px;
     text-align: right;
+  }
+
+  div.actions {
+    float:left;
+  }
+
+  div.captions {
+    float:right;
   }
 
 
@@ -114,7 +122,33 @@
   
   #footerText a:visited,#social a:visited{
   	color:#9d11b3;  	
-  }  
+  }
+
+  #popup_background {
+    display:none;
+    position:fixed;
+    height:100%;
+    width:100%;
+    top:0;
+    left:0;
+    background:#000000;
+    border:1px solid #cecece;
+    z-index:1;
+  } 
+
+  #customize_container {
+    padding:20px;
+    display:none;
+    z-index:2;
+    background:#eeeeee;
+    border:1px solid #1a1a1a;
+    outline:none;
+    color:#444;
+  }
+
+  #photo_view {
+    visibility:hidden;
+  }
 
 @media only screen and (max-width : 838px) {
 	

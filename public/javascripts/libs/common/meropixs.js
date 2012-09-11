@@ -36,6 +36,7 @@ function($, fbApi) {
 	});
 
 	meropixs.showView = meropixs.AppView();
+	meropixs.subView = meropixs.AppView();
 
 	return meropixs;
 });

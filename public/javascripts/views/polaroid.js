@@ -7,9 +7,10 @@ define([
         'collections/polaroids',
         'text!templates/polaroid.html',
         'javascripts/libs/facebook/facebook.js',
+        'views/customizeslide',
         'jqueryeffectscore',
         'jqueryeffectsslide'
-], function($, _, Backbone, MeroPixs, polaroidsCollection, polaroidTemplate, fbApi) {
+], function($, _, Backbone, MeroPixs, polaroidsCollection, polaroidTemplate, fbApi, customizeView) {
 	
 	var rendered = false;
 	var listOfFBPages = ["/naturalwondersofnepal", "/visitjapan","/NASA","/198320350202343","/natgeo","/KeepExploring"];
@@ -23,7 +24,8 @@ define([
 		},	
 
 		events : {
-			"click .polaroid" : "startSlideShow"			
+			"click .polaroid" : "startSlideShow",
+			"click .actions": "showPopup"			
 		},
 
 		close: function() {
@@ -47,6 +49,12 @@ define([
 			var polaroidId = $(ev.target).data('polaroid');
 			$("#supersized-loader").css("display", "block");
 			Backbone.history.navigate('/slideshow/' + polaroidId, {trigger:true});				
+		},
+
+		showPopup: function(ev){
+			ev.preventDefault();
+			customizeView.render();
+
 		},
 
 		render: function() {
