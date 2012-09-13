@@ -4,17 +4,20 @@ define([
         'backbone',
         'meropixs',
         'collections/photos',
+        'collections/selectphotos',
         'text!templates/photolist.html',
-        'views/albumlist',
         'javascripts/libs/facebook/facebook.js'
-], function($, _, Backbone, MeroPixs, photosCollection, photoListTemplate, albumListView,fbApi){
+], function($, _, Backbone, MeroPixs, photosCollection, selectCollection, photoListTemplate, fbApi){
+
+	var rendered = false;	
+	// setup events
+  	Backbone.pubSub=_.extend({},Backbone.Events);
 
 	var photoListView = Backbone.View.extend({
 		el: $("#photo_view"),
 
 		initialize: function() {
-			
-
+			Backbone.pubSub.bind('photolist',this.show, this);
 		},	
 
 		events : {
@@ -22,26 +25,37 @@ define([
 			"click .back" : "back",	
 		},
 
-		select: function() {
-			
+		select: function(ev) {
+			var photoId = $(ev.target).data('photo');
+			selectCollection.add(photosCollection.getByCid(photoId));
+		},
+
+		show:function(){
+			MeroPixs.subView(this);
 		},
 
 		close: function(){
 			var dfd = $.Deferred();
-			this.el.hide("slide", { direction: "right" }, 1000, function(){
+			this.el.hide("slide", { direction: "left" }, 500, function(){
 				dfd.resolve();
 			});
 			return dfd.promise();
 		},
 
 		back:function(){
-			MeroPixs.subView(albumListView);
+			Backbone.pubSub.trigger('albumlist');			
 		},
 
 		render: function() {
 
-			this.el.css('visibility','visible').fadeIn(1000);
 			
+			if (rendered) {
+				this.el.show("slide", { direction: "right" }, 500);
+				return;							
+			}
+
+			this.el.css('visibility','visible').fadeIn(0);
+						
 			this.collection=photosCollection;
 			photosCollection.add({ 
 							caption: "Photo1",							
@@ -57,6 +71,7 @@ define([
 					var compiledTemplate = _.template(photoListTemplate, data);
 
 					this.el.html(compiledTemplate);	
+			rendered=true;
 		},		
 		
 	});

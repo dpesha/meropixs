@@ -8,6 +8,7 @@ define([
         'text!templates/polaroid.html',
         'javascripts/libs/facebook/facebook.js',
         'views/customizeslide',
+        'views/albumlist',
         'jqueryeffectscore',
         'jqueryeffectsslide'
 ], function($, _, Backbone, MeroPixs, polaroidsCollection, polaroidTemplate, fbApi, customizeView) {

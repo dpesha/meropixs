@@ -1,3 +1,5 @@
 <div>
-	<div>Single Image</div>
-</div>	
+<% _.each(photos, function(photo){ %>
+	<div class="select" data-select="<%= photo.cid %>"><%= photo.get("caption") %></div>
+<% }); %>
+</div>

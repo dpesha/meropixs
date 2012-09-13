@@ -6,7 +6,7 @@ define([
         'javascripts/libs/facebook/facebook.js',
         'views/albumlist',
         'views/selectphotos'
-], function($, _, Backbone, MeroPixs, fbApi, albumListView, selectPhotosView) {
+], function($, _, Backbone, MeroPixs, fbApi, albumListView, selectedPhotosView) {
 
 	var customizeView = Backbone.View.extend({
 		el: $("#customize_container"),
@@ -31,7 +31,7 @@ define([
 			this.bp.fadeIn("slow");
 			this.el.fadeIn("slow");
 			MeroPixs.subView(albumListView);
-			selectPhotosView.render();			
+			selectedPhotosView.render();			
 		},
 
 		center: function(){

@@ -1,6 +1,6 @@
 <div class="back">back</div>
 <% _.each(photos, function(photo){ %>
 <li>
-	<div class="photo"><%= photo.get("caption") %></div>
+	<div class="photo" data-photo="<%= photo.cid %>"><%= photo.get("caption") %></div>
 </li>	
 <% }); %>

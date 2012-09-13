@@ -7,14 +7,15 @@ define([
         'text!templates/albumlist.html',
         'javascripts/libs/facebook/facebook.js',
         'views/photolist'
-], function($, _, Backbone, MeroPixs, albumsCollection, albumListTemplate, fbApi, photoListView) {
+], function($, _, Backbone, MeroPixs, albumsCollection, albumListTemplate, fbApi) {
 
-	var rendered = false;
+	var rendered = false;	
+
 	var albumListView = Backbone.View.extend({
 		el: $("#album_view"),
 
 		initialize: function() {
-			
+			Backbone.pubSub.bind('albumlist',this.show, this);
 		},	
 
 		events : {
@@ -23,20 +24,24 @@ define([
 
 		close: function() {
 			var dfd = $.Deferred();
-			this.el.hide("slide", { direction: "left" }, 1000, function(){
+			this.el.hide("slide", { direction: "right" }, 500, function(){
 				dfd.resolve();
 			});
 			return dfd.promise();
 		},
 
 		select:function(){
-			MeroPixs.subView(photoListView);
+			Backbone.pubSub.trigger('photolist');
 		},
 
-		render: function() {
+		show:function(){
+			MeroPixs.subView(this);
+		},
+
+		render: function() {			
 
 			if (rendered) {
-				this.el.show("slide", { direction: "right" }, 1000);
+				this.el.show("slide", { direction: "left" }, 500);
 				return;							
 			}
 			this.collection=albumsCollection;
