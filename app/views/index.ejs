@@ -3,12 +3,6 @@
 <div id="wrap">
 	<div id="header">
 		<div id="login">
-		  <% if (everyauth.loggedIn) { %>
-            <p> Hello, <%=everyauth.facebook.user.name%> , 
-              <a href="/logout"> Logout</a> </p>
-          <% } else { %>
-            <a href="javascript:openOAuthPopup('/auth/facebook',facebookAuthenticateCallback)"/> Login with facebook </a> 
-          <% } %> 
 		</div>
 	</div>
 	<div id="main">
@@ -73,29 +67,3 @@
 	<div id="select_view"></div>
 </div>
 </div>
-<script type="text/javascript">
-	function openOAuthPopup(url,callback){
-		var popupWindow = popupwindow(url, "popupWindow", 500, 250);
-		var timer = setInterval(function() {   
-		    if(popupWindow.closed) 
-		    {  
-		    	clearTimeout(timer);	    		
-	    		callback();
-		    }  
-		}, 1000);
-	}
-
-	function popupwindow(url, title, w, h) {
-		var left = (screen.width/2)-(w/2);
-		var top = (screen.height/2)-(h/2);
-		return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
-	}
-
-	function facebookAuthenticateCallback() {
-		if (window.location.pathname!="/" && "" == "true") {
-	         window.location = "/auth/facebook?redirectUrl="+encodeURIComponent(document.URL);
-	      } else {
-	         window.location = "/";
-	      }      
-	}
-</script>

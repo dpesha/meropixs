@@ -65,6 +65,7 @@ app.post('/users', authenticate, rest.newUser);
 app.get('/users/:id', authenticate, rest.viewUser);
 app.put('/users/:id', authenticate, rest.updateUser);
 app.delete('/users/:id', authenticate, rest.deleteUser);
+app.get('/fblogin', rest.getFBLogin);
 
 everyauth.helpExpress(app);
 

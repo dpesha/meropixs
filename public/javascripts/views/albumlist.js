@@ -44,6 +44,7 @@ define([
 				this.el.show("slide", { direction: "left" }, 500);
 				return;							
 			}
+			
 			this.collection=albumsCollection;
 			albumsCollection.add({ 
 							title: "Album1",							

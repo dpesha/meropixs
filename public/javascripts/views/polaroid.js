@@ -9,9 +9,10 @@ define([
         'javascripts/libs/facebook/facebook.js',
         'views/customizeslide',
         'views/albumlist',
+        'views/login',
         'jqueryeffectscore',
         'jqueryeffectsslide'
-], function($, _, Backbone, MeroPixs, polaroidsCollection, polaroidTemplate, fbApi, customizeView) {
+], function($, _, Backbone, MeroPixs, polaroidsCollection, polaroidTemplate, fbApi, customizeView, albumListView, loginView) {
 	
 	var rendered = false;
 	var listOfFBPages = ["/naturalwondersofnepal", "/visitjapan","/NASA","/198320350202343","/natgeo","/KeepExploring"];
@@ -22,6 +23,7 @@ define([
 
 		initialize: function() {
 			fbPagesInfoPromise = fbApi.getFBPagesInfo(listOfFBPages);
+			loginView.render();
 		},	
 
 		events : {

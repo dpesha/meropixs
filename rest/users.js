@@ -15,6 +15,17 @@ exports.listUsers=function(req,res){
 	});
 };
 
+//FB Login
+exports.getFBLogin=function(req,res){
+	if(req.session.auth){
+		return res.send({
+			name:req.session.auth.facebook.user.name, 
+			id:req.session.auth.facebook.user.id});
+	} else {
+		return res.send();
+	}
+};
+
 
 //CREATE
 exports.newUser=function(req,res){
