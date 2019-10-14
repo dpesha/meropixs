@@ -8,7 +8,7 @@
   }
   , "dependencies": {
       "express": "2.5.11"
-    , "ejs": "0.8.2"
+    , "ejs": "2.7.1"
     , "mongoose" : "3.1.0"
     , "everyauth" : "0.2.32"      
   }
